@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_food_recoginition/features/home/tabs/home_tab.dart';
-import 'package:flutter_food_recoginition/features/home/tabs/profile_tab.dart';
+import 'package:flutter_food_recoginition/features/home/tabs/profile%20tab/profile_tab.dart';
 import 'package:flutter_food_recoginition/features/home/tabs/scan_tab.dart';
 import 'package:flutter_food_recoginition/features/home/tabs/stats_tab.dart';
 

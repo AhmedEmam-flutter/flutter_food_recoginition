@@ -1,4 +1,6 @@
 // lib/features/profile/screens/edit_profile_screen.dart
+// ignore_for_file: unused_local_variable, deprecated_member_use, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_food_recoginition/core/function/animated_widgets.dart';
 
