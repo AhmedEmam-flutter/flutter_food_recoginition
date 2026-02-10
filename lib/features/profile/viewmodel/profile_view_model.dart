@@ -1,0 +1,148 @@
+import 'package:flutter/foundation.dart';
+import '../service/profile_local_storage.dart';
+import 'profile_api_models.dart';
+
+class ProfileViewModel extends ChangeNotifier {
+  final ProfileLocalStorage _local = ProfileLocalStorage();
+
+  bool isLoading = true;
+  String? error;
+
+  ProfileUiModel? data;
+
+  Future<void> init() async {
+    isLoading = true;
+    error = null;
+    notifyListeners();
+
+    try {
+      final all = await _local.loadAll();
+      if (all == null) {
+        data = ProfileUiModel.empty();
+        return;
+      }
+
+      final input = (all["input"] as Map).cast<String, dynamic>();
+      final setupJson = (all["setup"] as Map).cast<String, dynamic>();
+      final setup = ProfileSetupResponse.fromJson(setupJson);
+
+      String goalTextFromApi(String v) {
+        switch (v) {
+          case "LoseWeight":
+            return "Lose Weight";
+          case "GainWeight":
+            return "Gain Weight";
+          default:
+            return "Maintain Weight";
+        }
+      }
+
+      final age = (input["age"] as num).toInt();
+      final height = (input["height"] as num).toInt();
+      final weight = (input["weight"] as num).toDouble();
+
+      data = ProfileUiModel.fromSetupResponse(
+        name: "User",
+        email: "user@mail.com",
+        age: age,
+        heightCm: height,
+        weightKg: weight,
+        genderText: input["gender"].toString(),
+        activityText: input["activityLevel"].toString(),
+        goalText: goalTextFromApi(input["goalType"].toString()),
+        setup: setup,
+      );
+    } catch (e) {
+      error = e.toString();
+      data ??= ProfileUiModel.empty();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+}
+
+class ProfileUiModel {
+  final String name;
+  final String email;
+
+  final int age;
+  final int heightCm;
+  final double weightKg;
+
+  final double bmi;
+
+  final String goalText;
+  final String activityText;
+  final String genderText;
+
+  final double dailyCaloriesTarget;
+  final double bmr;
+  final double amr;
+
+  const ProfileUiModel({
+    required this.name,
+    required this.email,
+    required this.age,
+    required this.heightCm,
+    required this.weightKg,
+    required this.bmi,
+    required this.goalText,
+    required this.activityText,
+    required this.genderText,
+    required this.dailyCaloriesTarget,
+    required this.bmr,
+    required this.amr,
+  });
+
+  // ✅ علشان ProfileGoalCard بتاعك
+  String get goalTitle => goalText;
+  String get goalSubtitle => "Based on your body data and activity level.";
+
+  factory ProfileUiModel.empty() {
+    return const ProfileUiModel(
+      name: "User",
+      email: "user@mail.com",
+      age: 18,
+      heightCm: 170,
+      weightKg: 70,
+      bmi: 24.2,
+      goalText: "Maintain Weight",
+      activityText: "Sedentary",
+      genderText: "Male",
+      dailyCaloriesTarget: 2000,
+      bmr: 1500,
+      amr: 2000,
+    );
+  }
+
+  factory ProfileUiModel.fromSetupResponse({
+    required String name,
+    required String email,
+    required int age,
+    required int heightCm,
+    required double weightKg,
+    required String genderText,
+    required String activityText,
+    required String goalText,
+    required ProfileSetupResponse setup,
+  }) {
+    final hM = heightCm / 100.0;
+    final bmi = (hM > 0) ? (weightKg / (hM * hM)) : 0.0;
+
+    return ProfileUiModel(
+      name: name,
+      email: email,
+      age: age,
+      heightCm: heightCm,
+      weightKg: weightKg,
+      bmi: bmi,
+      goalText: goalText,
+      activityText: activityText,
+      genderText: genderText,
+      dailyCaloriesTarget: setup.dailyCaloriesTarget,
+      bmr: setup.bmr,
+      amr: setup.amr,
+    );
+  }
+}
