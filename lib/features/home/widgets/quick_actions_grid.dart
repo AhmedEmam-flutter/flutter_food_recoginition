@@ -53,11 +53,16 @@ class QuickActionsGrid extends StatelessWidget {
               ),
               SizedBox(width: gap),
               Expanded(
-                child: _ActionTile(
-                  title: "Ask AI",
-                  icon: Icons.psychology_alt_outlined,
-                  bg: ColorManager.primaryColor.withValues(alpha: 0.18),
-                  onTap: onAskAi,
+                child: InkWell(
+                  onTap: (){
+                    
+                  },
+                  child: _ActionTile(
+                    title: "Ask AI",
+                    icon: Icons.psychology_alt_outlined,
+                    bg: ColorManager.primaryColor.withValues(alpha: 0.18),
+                    onTap: onAskAi,
+                  ),
                 ),
               ),
             ],
@@ -110,7 +115,7 @@ class _ActionTile extends StatelessWidget {
     final h = size.height;
 
     final radius = w * 0.035;
-    final tileH = (h * 0.075).clamp(52.0, 72.0); // يمنع المبالغة على التابلت
+    final tileH = (h * 0.075).clamp(52.0, 72.0); 
     final iconSize = (w * 0.055).clamp(18.0, 24.0);
     final fontSize = (w * 0.032).clamp(11.0, 14.0);
     final padH = w * 0.03;

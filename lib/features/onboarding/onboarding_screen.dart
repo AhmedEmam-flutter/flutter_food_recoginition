@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_recoginition/features/auth/presention/login_page.dart';
-import 'package:flutter_food_recoginition/features/home/view/home_page.dart';
 import 'package:flutter_food_recoginition/features/onboarding/data/onboarding_data.dart';
 import 'package:flutter_food_recoginition/features/onboarding/widgets/onboarding_indicators.dart';
 import 'package:flutter_food_recoginition/features/onboarding/widgets/onboarding_page.dart';
 import 'package:flutter_food_recoginition/features/onboarding/widgets/onboarding_primary_button.dart';
 import 'package:flutter_food_recoginition/features/onboarding/widgets/onboarding_top_bar.dart';
-import 'package:flutter_food_recoginition/features/setup/view/setup_flow_page.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   static const String routeName = "/OnBoarding";
@@ -59,7 +57,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   void _skipToEnd() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const SetupFlowPage()),
+      MaterialPageRoute(builder: (_) =>  LoginPage()),
     );
   }
 

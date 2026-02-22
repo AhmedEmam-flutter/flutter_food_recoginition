@@ -26,17 +26,17 @@ class StepScaffold extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            // ✅ Top Right Green Image
+            
             Positioned(
               top: h * 0.1,
               right: w * 0.05,
               child: Image.asset(
-                'assets/pictures/topright.png', // 👈 change name
+                'assets/pictures/topright.png', 
                 width: w * 0.18,
               ),
             ),
 
-            // ✅ Bottom Left Green Image
+           
             Positioned(
               bottom: h * 0.1,
               left: w * 0.1,
@@ -46,7 +46,7 @@ class StepScaffold extends StatelessWidget {
               ),
             ),
 
-            // ===== Main Content =====
+            
             Padding(
               padding: EdgeInsets.symmetric(horizontal: w * 0.06),
               child: Column(

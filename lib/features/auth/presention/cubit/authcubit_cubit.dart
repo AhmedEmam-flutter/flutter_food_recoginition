@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_recoginition/core/storge/token_storage.dart';
-import 'package:flutter_food_recoginition/features/auth/presention/cubit/authcubit_state.dart';
+import '../../../../core/network/api_exception.dart';
+import '../../../../core/network/user_friendly_error.dart';
 import '../../data/repositories/auth_repository.dart';
+import 'authcubit_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository repo;
@@ -10,6 +12,8 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit({required this.repo, required this.storage})
       : super(const AuthState());
 
+  void clearError() => emit(state.copyWith(error: null));
+
   Future<void> login({
     required String email,
     required String password,
@@ -17,10 +21,15 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(loading: true, error: null));
     try {
       final user = await repo.login(email: email, password: password);
-      await storage.saveAuth(token: user.token, email: user.email, userName: user.userName);
+      await storage.saveAuth(
+        token: user.token,
+        email: user.email,
+        userName: user.userName,
+      );
       emit(state.copyWith(loading: false, user: user, error: null));
     } catch (e) {
-      emit(state.copyWith(loading: false, error: e.toString().replaceFirst("ApiException: ", "")));
+      final msg = userFriendlyMessage(e is ApiException ? e : e);
+      emit(state.copyWith(loading: false, error: msg));
     }
   }
 
@@ -38,10 +47,15 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
         confirmPassword: confirmPassword,
       );
-      await storage.saveAuth(token: user.token, email: user.email, userName: user.userName);
+      await storage.saveAuth(
+        token: user.token,
+        email: user.email,
+        userName: user.userName,
+      );
       emit(state.copyWith(loading: false, user: user, error: null));
     } catch (e) {
-      emit(state.copyWith(loading: false, error: e.toString().replaceFirst("ApiException: ", "")));
+      final msg = userFriendlyMessage(e is ApiException ? e : e);
+      emit(state.copyWith(loading: false, error: msg));
     }
   }
 }

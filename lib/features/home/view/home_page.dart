@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utiles/color_manager.dart';
+import '../../../core/diauth/service_locator.dart';
+import '../../../core/storge/token_storage.dart';
 import '../viewmodel/home_view_model.dart';
 import '../widgets/home_bottom_nav.dart';
 import '../widgets/quick_actions_grid.dart';
@@ -15,7 +17,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) {
-        final vm = HomeViewModel();
+        final vm = HomeViewModel(storage: sl<TokenStorage>());
         vm.init();
         return vm;
       },
@@ -50,7 +52,6 @@ class _HomeBody extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: h * 0.01),
-
                       Text(
                         "Home",
                         style: TextStyle(
@@ -59,18 +60,15 @@ class _HomeBody extends StatelessWidget {
                           color: ColorManager.textColor,
                         ),
                       ),
-
                       SizedBox(height: h * 0.02),
-
                       Text(
-                        "Good afternoon Ahmed 👋",
+                        "Good afternoon ${vm.userName.isEmpty ? '' : vm.userName} 👋",
                         style: TextStyle(
                           fontSize: w * 0.045,
                           fontWeight: FontWeight.w600,
                           color: ColorManager.textColor,
                         ),
                       ),
-
                       Text(
                         "Let’s track your nutrition today",
                         style: TextStyle(
@@ -78,13 +76,9 @@ class _HomeBody extends StatelessWidget {
                           color: ColorManager.textColor,
                         ),
                       ),
-
                       SizedBox(height: h * 0.02),
-
                       TodayProgressCard(progress: vm.progress!),
-
                       SizedBox(height: h * 0.025),
-
                       Text(
                         "Quick Actions",
                         style: TextStyle(
@@ -93,7 +87,6 @@ class _HomeBody extends StatelessWidget {
                           color: ColorManager.textColor,
                         ),
                       ),
-
                       SizedBox(height: h * 0.01),
                       QuickActionsGrid(
                         onScan: () {},
@@ -101,9 +94,7 @@ class _HomeBody extends StatelessWidget {
                         onStats: () {},
                         onManual: () {},
                       ),
-
                       SizedBox(height: h * 0.02),
-
                       Text(
                         "Recent Foods",
                         style: TextStyle(
@@ -112,7 +103,6 @@ class _HomeBody extends StatelessWidget {
                           color: ColorManager.textColor,
                         ),
                       ),
-
                       SizedBox(height: h * 0.01),
                       RecentFoodsList(items: vm.recentFoods),
                     ],
@@ -123,4 +113,3 @@ class _HomeBody extends StatelessWidget {
     );
   }
 }
-

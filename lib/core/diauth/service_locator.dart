@@ -8,10 +8,9 @@ import '../../features/auth/data/repositories/auth_repository_impl.dart';
 final sl = GetIt.instance;
 
 void setupServiceLocator() {
-  sl.registerLazySingleton<ApiClient>(() => ApiClient());
   sl.registerLazySingleton<TokenStorage>(() => TokenStorage());
+  sl.registerLazySingleton<ApiClient>(() => ApiClient(sl<TokenStorage>()));
 
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl<ApiClient>()));
-
   sl.registerFactory<AuthCubit>(() => AuthCubit(repo: sl<AuthRepository>(), storage: sl<TokenStorage>()));
 }

@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_recoginition/core/diauth/service_locator.dart';
 import 'package:flutter_food_recoginition/features/auth/presention/cubit/authcubit_cubit.dart';
+import 'package:flutter_food_recoginition/features/scan/cubit/reco_cubit.dart';
 
 import 'package:flutter_food_recoginition/features/auth/presention/login_page.dart';
 import 'package:flutter_food_recoginition/features/home/view/home_page.dart';
 import 'package:flutter_food_recoginition/features/profile/view/profile_page.dart';
 import 'package:flutter_food_recoginition/features/setup/view/setup_flow_page.dart';
-import 'package:flutter_food_recoginition/features/spalsh/splash.dart';
+import 'package:flutter_food_recoginition/features/spalsh/view/spash_page.dart';
 import 'features/onboarding/onboarding_screen.dart';
 
 
 void main() {
-  setupServiceLocator(); 
+  setupServiceLocator();
   runApp(const MyApp());
 }
 
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthCubit>(
           create: (_) => sl<AuthCubit>(),
+        ),
+        BlocProvider<ScanCubit>(
+          create: (_) => sl<ScanCubit>(),
         ),
       ],
       child: MaterialApp(

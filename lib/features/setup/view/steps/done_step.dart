@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_food_recoginition/features/auth/presention/login_page.dart';
+import 'package:flutter_food_recoginition/features/auth/presention/register_page.dart';
+import 'package:flutter_food_recoginition/features/home/view/home_page.dart';
 
 import '../../../../core/utiles/color_manager.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -10,6 +12,7 @@ class DoneStep extends StatelessWidget {
   const DoneStep({super.key});
 
   @override
+
   Widget build(BuildContext context) {
     final s = MediaQuery.of(context).size;
     final w = s.width;
@@ -44,7 +47,7 @@ class DoneStep extends StatelessWidget {
         onPressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) =>  LoginPage()),
+            MaterialPageRoute(builder: (_) =>  HomePage()),
           );
         },
       ),

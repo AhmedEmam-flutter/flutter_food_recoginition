@@ -9,8 +9,6 @@ import '../../../../core/widgets/auth_background.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/app_button.dart';
 
-
-
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
 
@@ -40,9 +38,12 @@ class RegisterPage extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.error!)),
                   );
+                  context.read<AuthCubit>().clearError();
                 }
+
                 if (state.user != null) {
-                  Navigator.pushNamed(context, '/setup');
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/setup', (_) => false);
                 }
               },
               child: SingleChildScrollView(
@@ -62,9 +63,7 @@ class RegisterPage extends StatelessWidget {
                           icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                         ),
                       ),
-
                       SizedBox(height: h * 0.15),
-
                       Text(
                         "Welcome to CalorieCalc AI",
                         textAlign: TextAlign.center,
@@ -74,9 +73,7 @@ class RegisterPage extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-
                       SizedBox(height: h * 0.2),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -105,9 +102,7 @@ class RegisterPage extends StatelessWidget {
                           ),
                         ],
                       ),
-
                       SizedBox(height: h * 0.025),
-
                       SizedBox(
                         width: formWidth,
                         child: Column(
@@ -137,9 +132,7 @@ class RegisterPage extends StatelessWidget {
                           ],
                         ),
                       ),
-
                       SizedBox(height: h * 0.01),
-
                       Padding(
                         padding: EdgeInsets.only(bottom: h * 0.02),
                         child: BlocBuilder<AuthCubit, AuthState>(

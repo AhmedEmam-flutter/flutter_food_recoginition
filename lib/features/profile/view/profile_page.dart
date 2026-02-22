@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/diauth/service_locator.dart';
+import '../../../core/storge/token_storage.dart';
 import '../../../core/utiles/color_manager.dart';
 import '../viewmodel/profile_view_model.dart';
 import '../widgets/profile_goal_card.dart';
@@ -17,7 +19,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) {
-        final vm = ProfileViewModel();
+        final vm = ProfileViewModel(tokenStorage: sl<TokenStorage>());
         vm.init();
         return vm;
       },
@@ -42,7 +44,10 @@ class _ProfileBody extends StatelessWidget {
       backgroundColor: ColorManager.backgroundColor,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: w * 0.06, vertical: h * 0.015),
+          padding: EdgeInsets.symmetric(
+            horizontal: w * 0.06,
+            vertical: h * 0.015,
+          ),
           child: vm.isLoading
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
@@ -58,20 +63,55 @@ class _ProfileBody extends StatelessWidget {
                           ),
                         ),
 
-                      ProfileTopCard(model: model, onEdit: () {}),
+                  
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            customBorder: const CircleBorder(),
+                            onTap: () => Navigator.maybePop(context),
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              size: 40,
+                              color: ColorManager.textColor,
+                            ),
+                          ),
+
+                          SizedBox(width: w * 0.025),
+
+                          Expanded(
+                            child: ProfileTopCard(
+                              model: model,
+                              onEdit: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+
                       SizedBox(height: h * 0.02),
 
-                      const ProfileSectionTitle(icon: Icons.info_outline, title: "Basic Information"),
+                      const ProfileSectionTitle(
+                        icon: Icons.info_outline,
+                        title: "Basic Information",
+                      ),
                       SizedBox(height: h * 0.01),
                       ProfileBasicInfoGrid(model: model),
+
                       SizedBox(height: h * 0.02),
 
-                      const ProfileSectionTitle(icon: Icons.flag_outlined, title: "Current Goal"),
+                      const ProfileSectionTitle(
+                        icon: Icons.flag_outlined,
+                        title: "Current Goal",
+                      ),
                       SizedBox(height: h * 0.01),
                       ProfileGoalCard(model: model),
+
                       SizedBox(height: h * 0.02),
 
-                      const ProfileSectionTitle(icon: Icons.settings_outlined, title: "App Settings"),
+                      const ProfileSectionTitle(
+                        icon: Icons.settings_outlined,
+                        title: "App Settings",
+                      ),
                       SizedBox(height: h * 0.01),
                       ProfileSettingsCard(
                         onNotifications: () {},

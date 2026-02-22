@@ -1,9 +1,17 @@
 import 'package:flutter/foundation.dart';
+import '../../../core/storge/token_storage.dart';
 import '../service/profile_local_storage.dart';
 import 'profile_api_models.dart';
 
 class ProfileViewModel extends ChangeNotifier {
-  final ProfileLocalStorage _local = ProfileLocalStorage();
+  final ProfileLocalStorage _local;
+  final TokenStorage _tokenStorage;
+
+  ProfileViewModel({
+    required TokenStorage tokenStorage,
+    ProfileLocalStorage? local,
+  })  : _tokenStorage = tokenStorage,
+        _local = local ?? ProfileLocalStorage();
 
   bool isLoading = true;
   String? error;
@@ -16,9 +24,12 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
+      final userName = (await _tokenStorage.getUserName()) ?? "User";
+      final email = (await _tokenStorage.getEmail()) ?? "user@mail.com";
+
       final all = await _local.loadAll();
       if (all == null) {
-        data = ProfileUiModel.empty();
+        data = ProfileUiModel.empty(name: userName, email: email);
         return;
       }
 
@@ -42,8 +53,8 @@ class ProfileViewModel extends ChangeNotifier {
       final weight = (input["weight"] as num).toDouble();
 
       data = ProfileUiModel.fromSetupResponse(
-        name: "User",
-        email: "user@mail.com",
+        name: userName,
+        email: email,
         age: age,
         heightCm: height,
         weightKg: weight,
@@ -95,14 +106,16 @@ class ProfileUiModel {
     required this.amr,
   });
 
-  // ✅ علشان ProfileGoalCard بتاعك
   String get goalTitle => goalText;
   String get goalSubtitle => "Based on your body data and activity level.";
 
-  factory ProfileUiModel.empty() {
-    return const ProfileUiModel(
-      name: "User",
-      email: "user@mail.com",
+  factory ProfileUiModel.empty({
+    String name = "User",
+    String email = "user@mail.com",
+  }) {
+    return ProfileUiModel(
+      name: name,
+      email: email,
       age: 18,
       heightCm: 170,
       weightKg: 70,

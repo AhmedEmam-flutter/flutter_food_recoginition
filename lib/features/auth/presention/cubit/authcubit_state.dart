@@ -12,14 +12,16 @@ class AuthState extends Equatable {
     this.user,
   });
 
+  static const _noChange = Object();
+
   AuthState copyWith({
     bool? loading,
-    String? error,
+    Object? error = _noChange,
     AuthResponse? user,
   }) {
     return AuthState(
       loading: loading ?? this.loading,
-      error: error,
+      error: identical(error, _noChange) ? this.error : error as String?,
       user: user ?? this.user,
     );
   }

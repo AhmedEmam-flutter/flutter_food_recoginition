@@ -11,7 +11,6 @@ import '../../../../core/widgets/auth_background.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/app_button.dart';
 
-
 class LoginPage extends StatelessWidget {
   static const String routeName = "/login";
   LoginPage({super.key});
@@ -46,9 +45,12 @@ class LoginPage extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.error!)),
                   );
+                  context.read<AuthCubit>().clearError();
                 }
+
                 if (state.user != null) {
-                  Navigator.pushNamed(context, '/home');
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/home', (_) => false);
                 }
               },
               child: SingleChildScrollView(
@@ -68,9 +70,7 @@ class LoginPage extends StatelessWidget {
                           icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                         ),
                       ),
-
                       SizedBox(height: topSpace),
-
                       Text(
                         "Welcome back",
                         style: TextStyle(
@@ -79,9 +79,7 @@ class LoginPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
                       SizedBox(height: betweenTitleAndText),
-
                       Text.rich(
                         TextSpan(
                           text: "Don’t have an account ? ",
@@ -110,9 +108,7 @@ class LoginPage extends StatelessWidget {
                           ],
                         ),
                       ),
-
                       SizedBox(height: betweenTextAndFields),
-
                       SizedBox(
                         width: formWidth,
                         child: Column(
@@ -131,9 +127,7 @@ class LoginPage extends StatelessWidget {
                           ],
                         ),
                       ),
-
                       SizedBox(height: h * 0.02),
-
                       Text(
                         "Forget password ?",
                         style: TextStyle(
@@ -141,9 +135,7 @@ class LoginPage extends StatelessWidget {
                           fontSize: w * 0.03,
                         ),
                       ),
-
                       SizedBox(height: h * 0.15),
-
                       Padding(
                         padding: EdgeInsets.only(bottom: bottomSpace),
                         child: BlocBuilder<AuthCubit, AuthState>(

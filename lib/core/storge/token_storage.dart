@@ -21,6 +21,16 @@ class TokenStorage {
     return sp.getString(_kToken);
   }
 
+  Future<String?> getUserName() async {
+    final sp = await SharedPreferences.getInstance();
+    return sp.getString(_kUserName);
+  }
+
+  Future<String?> getEmail() async {
+    final sp = await SharedPreferences.getInstance();
+    return sp.getString(_kEmail);
+  }
+
   Future<void> clear() async {
     final sp = await SharedPreferences.getInstance();
     await sp.remove(_kToken);

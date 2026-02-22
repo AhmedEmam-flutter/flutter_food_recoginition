@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/storge/token_storage.dart';
 
 class TodayProgressUiModel {
   final int calories;
@@ -22,7 +23,7 @@ class RecentFoodUiModel {
   final String name;
   final String time;
   final int calories;
-  final String? imageAsset; // optional (demo)
+  final String? imageAsset;
 
   const RecentFoodUiModel({
     required this.name,
@@ -33,6 +34,10 @@ class RecentFoodUiModel {
 }
 
 class HomeViewModel extends ChangeNotifier {
+  final TokenStorage storage;
+
+  HomeViewModel({required this.storage});
+
   bool isLoading = true;
   String? error;
 
@@ -41,16 +46,18 @@ class HomeViewModel extends ChangeNotifier {
 
   int selectedTab = 0;
 
+  String userName = "";
+
   Future<void> init() async {
     try {
       isLoading = true;
       error = null;
       notifyListeners();
 
-      
+      userName = (await storage.getUserName()) ?? "";
+
       await Future.delayed(const Duration(milliseconds: 400));
 
-      
       progress = const TodayProgressUiModel(
         calories: 1547,
         goal: 2000,
@@ -65,7 +72,7 @@ class HomeViewModel extends ChangeNotifier {
           name: "Apple",
           time: "9:30 pm",
           calories: 80,
-          imageAsset: "assets/pictures/pizza.png", // لو مش موجودة هيتعمل fallback
+          imageAsset: "assets/pictures/pizza.png",
         ),
         RecentFoodUiModel(
           name: "Pizza",

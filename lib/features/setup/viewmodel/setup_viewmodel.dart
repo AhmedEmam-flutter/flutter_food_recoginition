@@ -6,7 +6,6 @@ import '../model/setup_models.dart';
 
 class SetupViewModel extends ChangeNotifier {
   final data = SetupData();
-
   final pageController = PageController();
   int step = 0;
 
@@ -25,13 +24,20 @@ class SetupViewModel extends ChangeNotifier {
 
   bool get canGoNext {
     switch (step) {
-      case 0: return data.gender != null;
-      case 1: return (data.age ?? 0) > 5;
-      case 2: return (data.height ?? 0) > 50;
-      case 3: return (data.weight ?? 0) > 10;
-      case 4: return data.activity != null;
-      case 5: return data.goal != null;
-      default: return true;
+      case 0:
+        return data.gender != null;
+      case 1:
+        return (data.age ?? 0) > 5;
+      case 2:
+        return (data.height ?? 0) > 50;
+      case 3:
+        return (data.weight ?? 0) > 10;
+      case 4:
+        return data.activity != null;
+      case 5:
+        return data.goal != null;
+      default:
+        return true;
     }
   }
 
@@ -46,10 +52,12 @@ class SetupViewModel extends ChangeNotifier {
     }
 
     step++;
+
     await pageController.nextPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.ease,
     );
+
     notifyListeners();
   }
 
@@ -68,9 +76,8 @@ class SetupViewModel extends ChangeNotifier {
         goalType: data.goal!,
       );
 
-      final res = await _api.setup(req); 
+      final res = await _api.setup(req);
 
-      
       data.maintenanceCalories = res.amr.round();
       data.goalCalories = res.dailyCaloriesTarget.round();
       data.dailyTarget = res.dailyCaloriesTarget.round();
