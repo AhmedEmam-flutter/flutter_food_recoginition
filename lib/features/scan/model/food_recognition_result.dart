@@ -2,7 +2,7 @@ class FoodRecognitionResult {
   final String foodName;
   final double calories;
   final double carbs;
-  final double protein;
+  final double protien;
   final double fats;
   final String categoryName;
   final double confidenceScore;
@@ -11,7 +11,7 @@ class FoodRecognitionResult {
     required this.foodName,
     required this.calories,
     required this.carbs,
-    required this.protein,
+    required this.protien,
     required this.fats,
     required this.categoryName,
     required this.confidenceScore,
@@ -37,7 +37,7 @@ class FoodRecognitionResult {
       foodName: _toStringSafe(pick(['foodName', 'FoodName'])),
       calories: _toDouble(pick(['calories', 'Calories'])),
       carbs: _toDouble(pick(['carbs', 'Carbs'])),
-      protein: _toDouble(pick(['protein', 'Protien', 'Protein'])),
+      protien: _toDouble(pick(['protien', 'Protien', 'Protien'])),
       fats: _toDouble(pick(['fats', 'Fats'])),
       categoryName: _toStringSafe(pick(['categoryName', 'CategoryName'])),
       confidenceScore: _toDouble(pick(['confidenceScore', 'Confidence_Score', 'confidence_Score'])),

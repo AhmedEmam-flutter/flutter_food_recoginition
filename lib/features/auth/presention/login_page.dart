@@ -11,26 +11,44 @@ import '../../../../core/widgets/auth_background.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/app_button.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   static const String routeName = "/login";
   LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final email = TextEditingController();
   final password = TextEditingController();
+  String? emailError;
+  String? passError;
+
+  void validateEmail(String val) {
+    final bool emailValid =
+        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(val);
+    setState(() {
+      emailError = (val.isEmpty || emailValid) ? null : "Invalid email format";
+    });
+  }
+
+  void validatePassword(String val) {
+    final bool passValid =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+            .hasMatch(val);
+    setState(() {
+      passError = (val.isEmpty || passValid) 
+          ? null 
+          : "Must have upper, lower, symbol (@#) and 8+ chars";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final h = size.height;
     final w = size.width;
-
-    final topSpace = h * 0.15;
-    final betweenTitleAndText = h * 0.2;
-    final betweenTextAndFields = h * 0.03;
-    final betweenFields = h * 0.015;
-    final bottomSpace = h * 0.02;
-
-    final formWidth = w * 0.90;
 
     return BlocProvider(
       create: (_) => sl<AuthCubit>(),
@@ -47,7 +65,6 @@ class LoginPage extends StatelessWidget {
                   );
                   context.read<AuthCubit>().clearError();
                 }
-
                 if (state.user != null) {
                   Navigator.pushNamedAndRemoveUntil(
                       context, '/home', (_) => false);
@@ -70,7 +87,7 @@ class LoginPage extends StatelessWidget {
                           icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                         ),
                       ),
-                      SizedBox(height: topSpace),
+                      SizedBox(height: h * 0.15),
                       Text(
                         "Welcome back",
                         style: TextStyle(
@@ -79,7 +96,7 @@ class LoginPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: betweenTitleAndText),
+                      SizedBox(height: h * 0.2),
                       Text.rich(
                         TextSpan(
                           text: "Don’t have an account ? ",
@@ -108,21 +125,25 @@ class LoginPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: betweenTextAndFields),
+                      SizedBox(height: h * 0.03),
                       SizedBox(
-                        width: formWidth,
+                        width: w * 0.90,
                         child: Column(
                           children: [
                             AppTextField(
                               controller: email,
                               hint: "Enter your Email",
                               keyboardType: TextInputType.emailAddress,
+                              onChanged: validateEmail,
+                              errorText: emailError,
                             ),
-                            SizedBox(height: betweenFields),
+                            SizedBox(height: h * 0.015),
                             AppTextField(
                               controller: password,
                               hint: "Enter Password",
                               obscure: true,
+                              onChanged: validatePassword,
+                              errorText: passError,
                             ),
                           ],
                         ),
@@ -136,24 +157,25 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: h * 0.15),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: bottomSpace),
-                        child: BlocBuilder<AuthCubit, AuthState>(
-                          builder: (context, state) {
-                            return AppButton(
-                              text: state.loading ? "LOADING..." : "LOGIN",
-                              onPressed: state.loading
-                                  ? () {}
-                                  : () {
-                                      context.read<AuthCubit>().login(
-                                            email: email.text.trim(),
-                                            password: password.text,
-                                          );
-                                    },
-                            );
-                          },
-                        ),
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          bool hasError = emailError != null || passError != null;
+                          bool isEmpty = email.text.isEmpty || password.text.isEmpty;
+
+                          return AppButton(
+                            text: state.loading ? "LOADING..." : "LOGIN",
+                            onPressed: (state.loading || hasError || isEmpty)
+                                ? null
+                                : () {
+                                    context.read<AuthCubit>().login(
+                                          email: email.text.trim(),
+                                          password: password.text,
+                                        );
+                                  },
+                          );
+                        },
                       ),
+                      SizedBox(height: h * 0.02),
                     ],
                   ),
                 ),

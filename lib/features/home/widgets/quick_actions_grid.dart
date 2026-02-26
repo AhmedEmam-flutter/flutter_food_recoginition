@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_food_recoginition/core/askai/askai_page.dart';
 import '../../../core/utiles/color_manager.dart';
 
 class QuickActionsGrid extends StatelessWidget {
@@ -53,16 +54,17 @@ class QuickActionsGrid extends StatelessWidget {
               ),
               SizedBox(width: gap),
               Expanded(
-                child: InkWell(
-                  onTap: (){
-                    
+                child: _ActionTile(
+                  title: "Ask AI",
+                  icon: Icons.psychology_alt_outlined,
+                  bg: ColorManager.primaryColor.withValues(alpha: 0.18),
+                  // 🔥 التعديل هنا: نمرر وظيفة التنقل مباشرة إلى onTap الخاصة بالـ Tile
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AskAiPage()),
+                    );
                   },
-                  child: _ActionTile(
-                    title: "Ask AI",
-                    icon: Icons.psychology_alt_outlined,
-                    bg: ColorManager.primaryColor.withValues(alpha: 0.18),
-                    onTap: onAskAi,
-                  ),
                 ),
               ),
             ],
@@ -115,7 +117,7 @@ class _ActionTile extends StatelessWidget {
     final h = size.height;
 
     final radius = w * 0.035;
-    final tileH = (h * 0.075).clamp(52.0, 72.0); 
+    final tileH = (h * 0.075).clamp(52.0, 72.0);
     final iconSize = (w * 0.055).clamp(18.0, 24.0);
     final fontSize = (w * 0.032).clamp(11.0, 14.0);
     final padH = w * 0.03;

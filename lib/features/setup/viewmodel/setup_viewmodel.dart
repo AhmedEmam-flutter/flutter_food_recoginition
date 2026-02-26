@@ -41,25 +41,35 @@ class SetupViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> next() async {
-    if (!canGoNext || isLoading) return;
 
-    error = null;
+ Future<void> next() async {
+  if (!canGoNext || isLoading) return;
 
-    if (step == 5) {
-      await _callSetupApiAndSaveAll();
-      if (error != null) return;
-    }
+  error = null;
 
-    step++;
-
+  if (step == 5) {
+    step++; 
+    notifyListeners();
+    
     await pageController.nextPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.ease,
     );
 
-    notifyListeners();
+    await _callSetupApiAndSaveAll(); 
+    return;
   }
+
+  step++;
+  await pageController.nextPage(
+    duration: const Duration(milliseconds: 300),
+    curve: Curves.ease,
+  );
+  notifyListeners();
+}
+Future<void> retryCalculation() async {
+  await _callSetupApiAndSaveAll();
+}
 
   Future<void> _callSetupApiAndSaveAll() async {
     try {
@@ -104,6 +114,17 @@ class SetupViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+void back() {
+  if (step > 0) {
+    step--;
+    notifyListeners();
+    pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
+  }
+}
 
   @override
   void dispose() {

@@ -25,6 +25,7 @@ class _AgeStepState extends State<AgeStep> {
     return StepScaffold(
       title: "Age",
       subtitle: "How old are you?",
+      onBack: vm.step > 0 ? () => vm.back() : null,
       child: SizedBox(
         width: 220,
         child: AppTextField(

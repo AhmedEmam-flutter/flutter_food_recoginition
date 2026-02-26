@@ -18,6 +18,7 @@ class MetabolicStep extends StatelessWidget {
       return StepScaffold(
         title: "Metabolic Profile",
         subtitle: "Your estimated daily calories",
+        onBack: vm.step > 0 ? () => vm.back() : null,
         child: const Center(
           child: CircularProgressIndicator(),
         ),
@@ -32,6 +33,7 @@ class MetabolicStep extends StatelessWidget {
       return StepScaffold(
         title: "Metabolic Profile",
         subtitle: "Your estimated daily calories",
+        onBack: vm.step > 0 ? () => vm.back() : null,
         child: Center(
           child: Text(
             err,
@@ -53,8 +55,6 @@ class MetabolicStep extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 10),
-
-          
           const Text(
             "Maintenance (AMR)",
             style: TextStyle(
@@ -64,8 +64,6 @@ class MetabolicStep extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-
-          
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 14),
@@ -96,10 +94,7 @@ class MetabolicStep extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 20),
-
-          
           const Text(
             "Daily Target",
             style: TextStyle(
@@ -109,8 +104,6 @@ class MetabolicStep extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-
-          
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 16),

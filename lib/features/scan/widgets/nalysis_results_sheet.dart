@@ -137,7 +137,7 @@ class AnalysisResultsSheet extends StatelessWidget {
               Expanded(
                 child: _MacroCard(
                   title: 'Protein',
-                  value: result.protein.toStringAsFixed(1),
+                  value: result.protien.toStringAsFixed(1),
                   unit: 'g',
                   icon: Icons.fitness_center_outlined,
                 ),

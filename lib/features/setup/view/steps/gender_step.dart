@@ -41,6 +41,7 @@ class GenderStep extends StatelessWidget {
     return StepScaffold(
       title: "Gender",
       subtitle: "What’s your gender?",
+      onBack: vm.step > 0 ? () => vm.back() : null,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

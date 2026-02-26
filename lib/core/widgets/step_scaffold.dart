@@ -6,6 +6,7 @@ class StepScaffold extends StatelessWidget {
   final String subtitle;
   final Widget child;
   final Widget bottom;
+  final VoidCallback? onBack;
 
   const StepScaffold({
     super.key,
@@ -13,6 +14,7 @@ class StepScaffold extends StatelessWidget {
     required this.subtitle,
     required this.child,
     required this.bottom,
+    this.onBack,
   });
 
   @override
@@ -26,43 +28,41 @@ class StepScaffold extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            
             Positioned(
               top: h * 0.1,
               right: w * 0.05,
               child: Image.asset(
-                'assets/pictures/topright.png', 
+                'assets/pictures/topright.png',
                 width: w * 0.18,
               ),
             ),
-
-           
             Positioned(
               bottom: h * 0.1,
               left: w * 0.1,
               child: Image.asset(
-                'assets/pictures/bottomleft.png', // 👈 change name
+                'assets/pictures/bottomleft.png',
                 width: w * 0.25,
               ),
             ),
-
-            
             Padding(
               padding: EdgeInsets.symmetric(horizontal: w * 0.06),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: h * 0.01),
-
                   IconButton(
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
-                    onPressed: () => Navigator.maybePop(context),
+                    onPressed: () {
+                      if (onBack != null) {
+                        onBack!();
+                      } else {
+                        Navigator.maybePop(context);
+                      }
+                    },
                     icon: Icon(Icons.arrow_back_ios_new, size: w * 0.045),
                   ),
-
                   SizedBox(height: h * 0.01),
-
                   Align(
                     alignment: Alignment.center,
                     child: Text(
@@ -74,9 +74,7 @@ class StepScaffold extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   SizedBox(height: h * 0.05),
-
                   Align(
                     alignment: Alignment.center,
                     child: Text(
@@ -87,11 +85,8 @@ class StepScaffold extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   SizedBox(height: h * 0.03),
-
                   Expanded(child: Center(child: child)),
-
                   bottom,
                   SizedBox(height: h * 0.02),
                 ],

@@ -71,7 +71,7 @@ class EditProfileViewModel extends ChangeNotifier {
         goal: req.goalType,
       );
 
-      // لو عندك bmr/amr من السيرفر سابقًا، هنخلي bmr = maintenance/activityFactor تقريبًا مش متاح
+
       // فهنحط bmr = 0 مؤقتًا أو نقرأ القديم ونحافظ عليه.
       final old = await _local.loadAll();
       final oldSetup = (old?["setup"] as Map?)?.cast<String, dynamic>();

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_food_recoginition/features/profile/service/profile_local_storage.dart';
+import 'package:intl/intl.dart';
 import '../../../core/storge/token_storage.dart';
 
 class TodayProgressUiModel {
@@ -35,6 +37,7 @@ class RecentFoodUiModel {
 
 class HomeViewModel extends ChangeNotifier {
   final TokenStorage storage;
+  final ProfileLocalStorage profileStorage = ProfileLocalStorage();
 
   HomeViewModel({required this.storage});
 
@@ -54,17 +57,26 @@ class HomeViewModel extends ChangeNotifier {
       error = null;
       notifyListeners();
 
+  
       userName = (await storage.getUserName()) ?? "";
 
-      await Future.delayed(const Duration(milliseconds: 400));
+      final profileData = await profileStorage.loadAll();
+      
+      int savedGoal = 3000;
+      if (profileData != null && profileData['setup'] != null) {
+        savedGoal = (profileData['setup']['dailyCaloriesTarget'] as num).round();
+      }
 
-      progress = const TodayProgressUiModel(
-        calories: 1547,
-        goal: 2000,
-        protein: 65,
-        carbs: 120,
-        fat: 45,
-        dateLabel: "Sunday, Aug 24",
+      final String todayDate = DateFormat('EEEE, MMM d').format(DateTime.now());
+
+     
+      progress = TodayProgressUiModel(
+        calories: 2000,
+        goal: savedGoal,
+        protein: 0,
+        carbs: 0,
+        fat: 0,
+        dateLabel: todayDate,
       );
 
       recentFoods = const [

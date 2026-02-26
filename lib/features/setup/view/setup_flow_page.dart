@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../viewmodel/setup_viewmodel.dart';
 import 'steps/gender_step.dart';
 import 'steps/age_step.dart';

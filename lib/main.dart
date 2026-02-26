@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_recoginition/core/diauth/service_locator.dart';
 import 'package:flutter_food_recoginition/features/auth/presention/cubit/authcubit_cubit.dart';
 import 'package:flutter_food_recoginition/features/scan/cubit/reco_cubit.dart';
-
 import 'package:flutter_food_recoginition/features/auth/presention/login_page.dart';
 import 'package:flutter_food_recoginition/features/home/view/home_page.dart';
 import 'package:flutter_food_recoginition/features/profile/view/profile_page.dart';

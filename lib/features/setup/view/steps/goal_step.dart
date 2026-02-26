@@ -42,6 +42,7 @@ class GoalStep extends StatelessWidget {
     return StepScaffold(
       title: "Weight Goal",
       subtitle: "What’s your goal?",
+      onBack: vm.step > 0 ? () => vm.back() : null,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

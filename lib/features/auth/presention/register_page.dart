@@ -9,20 +9,56 @@ import '../../../../core/widgets/auth_background.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/app_button.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   RegisterPage({super.key});
 
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   final name = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
   final confirm = TextEditingController();
+
+  String? emailError;
+  String? passError;
+  String? confirmError;
+
+  void validateEmail(String val) {
+    final bool emailValid =
+        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(val);
+    setState(() {
+      emailError = (val.isEmpty || emailValid) ? null : "Invalid email format";
+    });
+  }
+
+  void validatePassword(String val) {
+    final bool passValid =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+            .hasMatch(val);
+    setState(() {
+      passError = (val.isEmpty || passValid)
+          ? null
+          : "Must have upper, lower, symbol (@#) and 8+ chars";
+    });
+    if (confirm.text.isNotEmpty) validateConfirm(confirm.text);
+  }
+
+  void validateConfirm(String val) {
+    setState(() {
+      confirmError = (val.isEmpty || val == password.text)
+          ? null
+          : "Passwords do not match";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final h = size.height;
     final w = size.width;
-
     final formWidth = w * 0.88;
 
     return BlocProvider(
@@ -40,7 +76,6 @@ class RegisterPage extends StatelessWidget {
                   );
                   context.read<AuthCubit>().clearError();
                 }
-
                 if (state.user != null) {
                   Navigator.pushNamedAndRemoveUntil(
                       context, '/setup', (_) => false);
@@ -116,18 +151,24 @@ class RegisterPage extends StatelessWidget {
                               controller: email,
                               hint: "Enter your Email",
                               keyboardType: TextInputType.emailAddress,
+                              onChanged: validateEmail,
+                              errorText: emailError,
                             ),
                             SizedBox(height: h * 0.014),
                             AppTextField(
                               controller: password,
                               hint: "Enter Password",
                               obscure: true,
+                              onChanged: validatePassword,
+                              errorText: passError,
                             ),
                             SizedBox(height: h * 0.014),
                             AppTextField(
                               controller: confirm,
                               hint: "Confirm password",
                               obscure: true,
+                              onChanged: validateConfirm,
+                              errorText: confirmError,
                             ),
                           ],
                         ),
@@ -137,10 +178,18 @@ class RegisterPage extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: h * 0.02),
                         child: BlocBuilder<AuthCubit, AuthState>(
                           builder: (context, state) {
+                            bool hasErrors = emailError != null ||
+                                passError != null ||
+                                confirmError != null;
+                            bool isFormEmpty = name.text.isEmpty ||
+                                email.text.isEmpty ||
+                                password.text.isEmpty ||
+                                confirm.text.isEmpty;
+
                             return AppButton(
                               text: state.loading ? "LOADING..." : "REGISTER",
-                              onPressed: state.loading
-                                  ? () {}
+                              onPressed: (state.loading || hasErrors || isFormEmpty)
+                                  ? null
                                   : () {
                                       context.read<AuthCubit>().register(
                                             userName: name.text.trim(),

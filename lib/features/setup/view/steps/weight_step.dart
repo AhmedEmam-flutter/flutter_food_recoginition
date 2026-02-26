@@ -23,6 +23,7 @@ class _WeightStepState extends State<WeightStep> {
     return StepScaffold(
       title: "Weight",
       subtitle: "Enter your weight (kg)",
+      onBack: vm.step > 0 ? () => vm.back() : null,
       child: SizedBox(
         width: 220,
         child: AppTextField(

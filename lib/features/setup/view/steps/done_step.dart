@@ -24,6 +24,7 @@ class DoneStep extends StatelessWidget {
     return StepScaffold(
       title: "All Set!",
       subtitle: "Your health plan is ready",
+      
       child: Center(
         child: Container(
           width: circleSize,

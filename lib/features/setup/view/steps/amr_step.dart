@@ -44,6 +44,11 @@ class AmrStep extends StatelessWidget {
     return StepScaffold(
       title: "AMR",
       subtitle: "Choose your activity level",
+      onBack: vm.step > 0 ? () => vm.back() : null,
+      bottom: AppButton(
+        text: "NEXT",
+        onPressed: vm.canGoNext ? () => vm.next() : null,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -71,10 +76,6 @@ class AmrStep extends StatelessWidget {
             onTap: () => vm.setActivity(ActivityLevel.highlyActive),
           ),
         ],
-      ),
-      bottom: AppButton(
-        text: "NEXT",
-        onPressed: vm.canGoNext ? () => vm.next() : null,
       ),
     );
   }
