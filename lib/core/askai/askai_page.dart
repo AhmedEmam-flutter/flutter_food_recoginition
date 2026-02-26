@@ -46,19 +46,19 @@ class _AskAiView extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              const UsageGuideWidget(), // <-- public class
+              const UsageGuideWidget(), 
               Expanded(
                 child: ListView.builder(
                   reverse: false,
                   padding: const EdgeInsets.all(16),
                   itemCount: vm.messages.length,
                   itemBuilder: (context, index) {
-                    return AnimatedChatBubble(message: vm.messages[index]); // <-- public class
+                    return AnimatedChatBubble(message: vm.messages[index]); 
                   },
                 ),
               ),
-              if (vm.isTyping) const TypingIndicatorWidget(), // <-- public class
-              ChatInputWidget(vm: vm), // <-- public class
+              if (vm.isTyping) const TypingIndicatorWidget(), 
+              ChatInputWidget(vm: vm), 
             ],
           ),
         ),
